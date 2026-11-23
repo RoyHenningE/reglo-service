@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Servicerapport Lift-Man Fold</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Service LMF">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<style>
+:root{
+  --bg:#ffffff; --surface:#f5f7f2; --ink:#111111; --muted:#6b6b6b; --line:#d0d0d0;
+  --green:#7AB929; --green-ink:#3d6b0c; --green-bg:#eef6e3;
+  --warn:#c2410c; --warn-bg:#fdf1ea; --na:#6b6b6b;
+  --font:Inter,-apple-system,"Segoe UI",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 40px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+[hidden]{display:none!important}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.top svg{width:120px;height:auto;flex:none}
+.who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);min-width:0}
+.who .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+h1{text-align:center;font-size:clamp(22px,5vw,30px);font-weight:800;margin:10px 0 14px;letter-spacing:-.01em}
+.banner{background:var(--surface);border-radius:10px;padding:10px 12px;font-size:13.5px;margin:0 0 12px;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.banner b{font-weight:700}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+.bar-row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:4px;background:var(--surface);border-radius:10px;padding:3px}
+.tab{border:0;background:transparent;padding:8px 14px;border-radius:8px;font-weight:600;color:var(--muted);min-height:40px}
+.tab[aria-selected="true"]{background:var(--bg);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.btn{border:1px solid var(--line);background:var(--bg);padding:9px 16px;border-radius:9px;font-weight:600;min-height:44px}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.danger{color:var(--warn);border-color:#e9b9a0}
+.btn.small{min-height:36px;padding:6px 12px;font-size:13.5px}
+.btn:disabled{opacity:.45;cursor:default}
+.prog{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.prog .track{flex:1;height:4px;background:var(--surface);border-radius:2px;overflow:hidden}
+.prog .fill{height:100%;width:0;background:var(--green);transition:width .25s}
+.prog .avv{color:var(--warn);font-weight:600}
+
+.card{border-top:1px solid var(--line);padding:16px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f>span,.lbl-s{font-size:12.5px;color:var(--muted);font-weight:500}
+.f input,.f textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg);min-height:46px;font-size:16px}
+.f textarea{min-height:70px;resize:vertical}
+.f.wide{grid-column:1/-1}
+.hint{font-size:12.5px;color:var(--warn);font-weight:600}
+.unit{display:flex;align-items:center;gap:8px}.unit input{flex:1}.unit em{font-style:normal;color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;width:fit-content;max-width:100%}
+.seg button{border:0;background:var(--bg);padding:10px 18px;min-height:46px;font-weight:600;color:var(--muted);border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.sec{border-top:2px solid var(--ink);margin-top:26px}
+.sec-h{display:flex;align-items:center;gap:12px;padding:12px 0 6px;flex-wrap:wrap}
+.sec-nr{font-weight:800;min-width:2rem;font-variant-numeric:tabular-nums}
+.sec-h h2{font-size:18px;font-weight:700;margin:0;flex:1;min-width:10rem}
+.sec-tools{display:flex;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--muted);min-height:36px}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sec.is-na .sec-body,.sec.is-na .allok{display:none}
+.sec-count{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:500}
+
+.item{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line);border-radius:4px}
+.item .nr{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600;font-size:14px}
+.item .acts{display:flex;gap:6px;align-items:center}
+.item .cmt{grid-column:2/-1;width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:44px;resize:vertical;font-size:16px}
+.item.s-avvik{background:var(--warn-bg)}
+.item.s-ok .nr{color:var(--green-ink)}
+.st{border:1.5px solid var(--line);background:var(--bg);border-radius:9px;min-height:46px;padding:0 14px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
+.st-ok{min-width:64px}
+.st-ok[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#111}
+.st-avvik[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.st-ia[aria-pressed="true"]{background:var(--na);border-color:var(--na);color:#fff}
+.cbtn{border:1.5px solid var(--line);background:var(--bg);border-radius:9px;width:46px;height:46px;display:grid;place-items:center;color:var(--muted);padding:0}
+.cbtn.has{color:var(--ink);border-color:var(--ink)}
+.cbtn svg{width:18px;height:18px}
+.item.choice .seg{justify-self:end}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .item{grid-template-columns:2.2rem minmax(0,1fr)}
+  .item .acts{grid-column:1/-1}
+  .item .acts .st{flex:1}
+  .item .cmt{grid-column:1/-1}
+  .item.choice .seg{grid-column:1/-1;justify-self:start}
+}
+
+.concl{display:grid;gap:14px}
+.concl .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.avvlist{background:var(--warn-bg);border-radius:8px;padding:10px 12px;font-size:14px}
+.avvlist b{color:var(--warn)}
+.sigbox{border:1px dashed #9a9a9a;border-radius:10px;position:relative;background:var(--bg)}
+#sig{display:block;width:100%;height:170px;touch-action:none}
+.sigbox .sigl{position:absolute;left:12px;bottom:8px;font-size:12px;color:var(--muted);pointer-events:none}
+.sigbox .sigclr{position:absolute;right:8px;top:8px}
+.sigline{position:absolute;left:12px;right:12px;bottom:28px;border-bottom:1px solid var(--line);pointer-events:none}
+.endacts{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:24px}
+.note{font-size:13.5px;color:var(--muted);margin:10px 0 0;overflow-wrap:anywhere}
+.note .err{color:var(--warn);font-weight:600}
+.note a{color:var(--green-ink);font-weight:600}
+
+.mailcard{margin-top:18px;border:1px solid var(--line);border-top:3px solid var(--green);border-radius:10px;padding:14px;display:grid;gap:10px}
+.mailcard h3{margin:0;font-size:17px}
+.f input[type="email"]{font-size:16px}
+.search{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;min-height:46px;margin:16px 0 8px;font-size:16px}
+.rec{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.rec h3{margin:0;font-size:16px}
+.rec .meta{color:var(--muted);font-size:13px}
+.rec .ra{display:flex;gap:6px;flex-wrap:wrap;grid-column:1/-1}
+.pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--green-bg);color:var(--green-ink)}
+.pill.no{background:var(--warn-bg);color:var(--warn)}
+.pill.wip{background:var(--surface);color:var(--muted)}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-weight:600;z-index:20;max-width:calc(100% - 32px);text-align:center}
+footer{margin-top:44px;padding-top:10px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:11px}
+.part-h{font-size:clamp(20px,4.5vw,24px);font-weight:800;margin:34px 0 0;padding-bottom:6px;border-bottom:3px solid var(--green);width:fit-content}
+.prt{display:grid;grid-template-columns:6.2rem minmax(0,1fr) 4.6rem auto;gap:8px 12px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line)}
+.prt .vn{font-weight:600;font-variant-numeric:tabular-nums;font-size:14px}
+.prt .qty{text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+.prt input{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:44px;font-size:16px;background:var(--bg)}
+.prt input.qty{text-align:center}
+.prt.done{background:var(--green-bg)}
+.prt-x{grid-template-columns:7rem minmax(0,1fr) 4.6rem auto auto}
+.prt-head{font-size:12.5px;color:var(--muted);font-weight:600;padding-block:6px;border-bottom:1px solid var(--ink)}
+.rm{border:1.5px solid var(--line);background:var(--bg);border-radius:9px;width:44px;height:44px;color:var(--warn);font-size:20px;line-height:1;padding:0}
+@media (max-width:640px){
+  .prt{grid-template-columns:5.6rem minmax(0,1fr)}
+  .prt .qty,.prt input.qty{justify-self:start;width:5.5rem}
+  .prt-x{grid-template-columns:5.6rem minmax(0,1fr) 44px;grid-template-areas:"vn vn rm" "txt txt txt" "stk bx bx"}
+  .prt-x .i-vn{grid-area:vn}.prt-x .i-txt{grid-area:txt}.prt-x input.qty{grid-area:stk;width:100%}.prt-x .bx{grid-area:bx;display:grid}.prt-x .rm{grid-area:rm}
+  .prt-head{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220.503 86.469" role="img" aria-label="Reglo" id="logo"><path fill="#000000" d="M21.465 69.564 C20.358 68.76 19.309 67.883 18.322 66.94 C17.221 68.336 15.666 69.124 13.885 69.124 C11.612 69.124 9.334 67.819 8.083 65.8 C6.887 63.87 6.793 61.57 7.827 59.488 L10.402 54.306 C9.476 51.412 8.972 48.332 8.972 45.135 C8.972 28.496 22.509 14.959 39.147 14.959 C39.725 14.959 40.298 14.979 40.868 15.012 C41.621 12.064 42.382 9.126 43.148 6.191 C41.833 6.057 40.498 5.987 39.147 5.987 C17.561 5.987 0 23.549 0 45.135 C0 61.256 9.797 75.129 23.749 81.121 C22.892 77.279 22.147 73.405 21.465 69.564"/><path fill="#000000" d="M57.091 10.36 L57.767 21.415 C59.751 22.978 61.537 24.78 63.076 26.782 C63.744 26.541 64.455 26.406 65.196 26.406 C67.671 26.406 70.102 27.824 71.247 29.934 C72.289 31.855 72.159 34.077 70.888 36.029 L68.753 39.315 C69.122 41.199 69.321 43.143 69.321 45.135 C69.321 61.773 55.784 75.31 39.146 75.31 C39.095 75.31 39.043 75.305 38.992 75.305 C38.261 78.14 37.527 80.97 36.783 83.788 C36.747 83.928 36.685 84.056 36.639 84.192 C37.469 84.245 38.303 84.281 39.146 84.281 C60.732 84.281 78.293 66.72 78.293 45.135 C78.293 30.014 69.671 16.879 57.091 10.36"/><path fill="#7AB929" d="M31.16 61.899 C30.023 55.29 28.893 48.682 27.327 42.159 C26.836 40.113 24.816 38.935 22.852 38.935 C21.366 38.935 19.911 39.609 19.175 41.094 C15.984 47.519 12.793 53.944 9.602 60.37 C7.85 63.897 10.949 67.142 13.885 67.142 C15.214 67.142 16.508 66.477 17.305 64.873 C18.625 62.216 19.943 59.562 21.261 56.905 C22.854 65.712 24.174 74.575 26.264 83.282 C26.778 85.421 28.629 86.469 30.498 86.469 C32.395 86.469 34.31 85.391 34.866 83.282 C39.276 66.569 43.377 49.777 47.567 33.007 C47.944 39.168 48.32 45.328 48.697 51.489 C48.863 54.209 51.024 55.866 53.24 55.866 C54.637 55.866 56.055 55.207 57.009 53.741 C61.082 47.476 65.154 41.213 69.226 34.95 C71.415 31.584 68.325 28.39 65.195 28.39 C63.835 28.39 62.469 28.993 61.523 30.447 C59.942 32.879 58.36 35.312 56.778 37.745 L54.739 4.377 C54.571 1.639 52.232 0 49.984 0 C48.245 -0.001 46.561 0.98 45.977 3.191 C40.828 22.707 36.101 42.331 31.16 61.899"/><path fill="#000000" d="M106.891 62.141 L110.401 62.141 L116.611 73.391 L127.501 73.391 L119.897 60.566 C124.352 58.946 126.647 55.841 126.647 51.341 C126.647 48.371 125.656 45.761 123.946 44.006 C122.011 42.071 119.446 41.261 115.171 41.261 L96.946 41.261 L96.946 73.391 L106.891 73.391 L106.891 62.141 Z M106.891 55.571 L106.891 47.83 L111.437 47.83 C115.441 47.83 116.837 48.821 116.837 51.701 C116.837 54.581 115.441 55.571 111.437 55.571 L106.891 55.571"/><path fill="#000000" d="M152.601 63.086 C152.646 53.815 147.83 48.461 139.46 48.461 C131.54 48.461 126.275 53.726 126.275 61.601 C126.275 69.386 131.675 74.516 139.865 74.516 C145.175 74.516 149.63 72.086 152.194 67.721 L144.455 64.66 C143.42 67.046 142.115 68.081 140.181 68.081 C137.525 68.081 135.995 66.28 135.905 63.086 L152.601 63.086 Z M143.015 58.27 L135.905 58.27 C136.355 55.706 137.525 54.49 139.64 54.49 C141.71 54.49 142.655 55.525 143.015 58.27"/><path fill="#000000" d="M179.329 49.586 L171.454 49.586 L171.454 51.926 C169.475 49.631 167.585 48.775 164.614 48.775 C158.089 48.775 153.634 53.681 153.634 60.836 C153.634 67.586 157.909 72.041 164.435 72.041 C167.134 72.041 168.574 71.501 170.464 69.746 L170.464 71.41 C170.464 73.615 170.329 74.291 169.835 74.966 C169.114 75.91 167.9 76.405 166.234 76.405 C163.669 76.405 162.679 75.596 162.634 73.391 L153.949 73.391 C154.175 75.82 154.489 77.035 155.074 78.07 C156.605 80.636 159.89 81.716 166.1 81.716 C170.194 81.716 173.21 81.086 175.415 79.69 C178.339 77.891 179.329 75.731 179.329 71.186 L179.329 49.586 Z M166.64 55.211 C169.204 55.211 170.419 56.966 170.419 60.566 C170.419 64.211 169.204 65.921 166.64 65.921 C164.12 65.921 162.859 64.211 162.859 60.7 C162.859 56.921 164.029 55.211 166.64 55.211"/><path fill="#000000" d="M181.669 73.391 L190.983 73.391 L190.983 41.261 L181.669 41.261 Z"/><path fill="#000000" d="M206.599 48.461 C198.139 48.461 192.693 53.546 192.693 61.466 C192.693 69.386 198.139 74.516 206.599 74.516 C215.059 74.516 220.503 69.431 220.503 61.466 C220.503 53.546 215.059 48.461 206.599 48.461 Z M206.599 54.895 C209.568 54.895 211.189 57.235 211.189 61.511 C211.189 65.74 209.524 68.081 206.599 68.081 C203.673 68.081 202.009 65.695 202.009 61.511 C202.009 57.28 203.673 54.895 206.599 54.895"/></svg>
+    <div class="who" id="who"></div>
+  </div>
+  <h1>Servicerapport – Lift-Man Fold</h1>
+  <div class="banner" id="installTip" hidden><span>Legg appen på hjemskjermen: trykk <b>Del</b> og velg <b>Legg til på Hjem-skjerm</b>.</span><button class="chip" id="tipClose" type="button">OK</button></div>
+  <div class="banner" id="offlineTip" hidden><span>Du er uten nett. Utfyllingen lagres på telefonen og lastes opp når nettet er tilbake.</span></div>
+
+  <div class="bar">
+    <div class="bar-row">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-form" aria-selected="true">Kontroll</button>
+        <button class="tab" role="tab" id="tab-list" aria-selected="false">Lagrede <span id="savedCount"></span></button>
+      </div>
+      <button class="btn" id="btnNew" type="button">Ny kontroll</button>
+    </div>
+    <div class="prog" id="progRow"><span id="progTxt">0 av 0</span><div class="track"><div class="fill" id="progFill"></div></div><span id="progAvv"></span></div>
+  </div>
+
+  <form id="form" autocomplete="off" onsubmit="return false"></form>
+
+  <section id="list" hidden>
+    <input class="search" id="search" type="search" placeholder="Søk på kunde, serienummer, ordrenr. eller tekniker">
+    <p class="note" id="queueNote" hidden></p>
+    <div id="recs"></div>
+  </section>
+
+  <footer>Reglo AS · Halumveien 11, 3158 Andebu, Norway · Tlf. +47 33 43 02 80 · info@reglo.no · www.reglo.no · Org.nr. 983 148 336 MVA</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.3/lib/msal-browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
